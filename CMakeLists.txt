@@ -544,6 +544,9 @@ if(SECURITY_COMPILER_FLAGS)
   find_package(SSP)
 endif()
 
+# ddts
+find_package(protobuf CONFIG REQUIRED)
+
 if(TARGET_OS AND TARGET_OS STREQUAL "mac")
   find_program(CMAKE_OTOOL otool)
   find_program(DMGBUILD dmgbuild)
@@ -1834,6 +1837,23 @@ add_custom_command(OUTPUT "src/game/generated/wordlist.h"
 )
 
 ########################################################################
+# DDTS
+########################################################################
+
+add_custom_command(
+  OUTPUT src/game/protos/request.pb.h src/game/protos/request.pb.cc
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/datasrc
+  COMMAND protoc protos/*.proto
+  --cpp_out=${PROJECT_BINARY_DIR}/src
+)
+
+set(PROTO_SRC
+  src/protos/request.pb.h
+  src/protos/request.pb.cc
+  #gottem
+)
+
+########################################################################
 # SHARED
 ########################################################################
 
@@ -2494,6 +2514,11 @@ if(SERVER)
     databases/connection_pool.h
     databases/mysql.cpp
     databases/sqlite.cpp
+
+    # ddts
+    ddts.cpp
+    ddts.h
+
     main.cpp
     name_ban.cpp
     name_ban.h
@@ -2565,7 +2590,7 @@ if(SERVER)
     "src/game/generated/server_data.h"
     "src/game/generated/wordlist.h"
   )
-  set(SERVER_SRC ${ENGINE_SERVER} ${GAME_SERVER} ${GAME_GENERATED_SERVER})
+  set(SERVER_SRC ${ENGINE_SERVER} ${GAME_SERVER} ${GAME_GENERATED_SERVER} ${PROTO_SRC})
   if(TARGET_OS STREQUAL "windows")
     set(SERVER_ICON "other/icons/DDNet-Server.rc")
   else()
@@ -2585,6 +2610,9 @@ if(SERVER)
     ${MYSQL_LIBRARIES}
     ${TARGET_ANTIBOT}
     rust_engine_shared
+
+    # ddts
+    protobuf::libprotobuf
 
     ${LIBS}
   )
