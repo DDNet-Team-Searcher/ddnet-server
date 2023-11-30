@@ -44,6 +44,9 @@ public:
 		const CUuid *m_pConnectionID;
 	};
 
+    // ddts
+    int m_FinishTick;
+
 	int Tick() const { return m_CurrentGameTick; }
 	int TickSpeed() const { return SERVER_TICK_SPEED; }
 

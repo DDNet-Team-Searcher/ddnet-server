@@ -2,3 +2,6 @@
 	path = ddnet-libs
 	url = https://github.com/ddnet/ddnet-libs
 	shallow = true
+[submodule "datasrc/protos"]
+	path = datasrc/protos
+	url = https://github.com/DDNet-Team-Searcher/protos

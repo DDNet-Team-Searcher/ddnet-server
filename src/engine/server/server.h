@@ -243,6 +243,7 @@ public:
 
 	int64_t m_GameStartTime;
 	//int m_CurrentGameTick;
+    //int m_FinishTick;
 
 	enum
 	{

@@ -45,6 +45,10 @@
 #include "databases/connection_pool.h"
 #include "register.h"
 
+// ddts
+#include "ddts.h"
+#include <string>
+
 extern bool IsInterrupted();
 
 CSnapIDPool::CSnapIDPool()
@@ -622,6 +626,9 @@ int CServer::Init()
 	}
 
 	m_CurrentGameTick = MIN_TICK;
+
+	// ddts
+	m_FinishTick = -1;
 
 	m_AnnouncementLastLine = 0;
 	m_aAnnouncementFile[0] = '\0';
@@ -3058,11 +3065,25 @@ int CServer::Run()
 				Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "server", "interrupted");
 				break;
 			}
+
+			// ddts
+			if(m_FinishTick != -1 && Config()->m_SvShutdownAfterFinish && Config()->m_SvWaitUntilShutdownAfterFinish < (Tick() - m_FinishTick) / TickSpeed())
+			{
+				ddts::Shutdown(std::stoi(Config()->m_SvHappeningId));
+
+				break;
+			}
 		}
 	}
 	const char *pDisconnectReason = "Server shutdown";
 	if(m_aShutdownReason[0])
 		pDisconnectReason = m_aShutdownReason;
+
+	// ddts
+	if(m_FinishTick != -1 && Config()->m_SvShutdownAfterFinish)
+	{
+		pDisconnectReason = "Thanks for playing on my servers >~<";
+	}
 
 	if(ErrorShutdown())
 	{

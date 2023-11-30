@@ -1215,6 +1215,21 @@ void CGameContext::OnTick()
 		m_TeeHistorian.BeginInputs();
 	}
 	// Warning: do not put code in this function directly above or below this comment
+    // I focken will
+
+    // ddts
+    if(Server()->m_FinishTick != -1)
+    {
+        float secondsElapsed = (float)(Server()->Tick() - Server()->m_FinishTick) / (float)Server()->TickSpeed();
+
+        if(Config()->m_SvShutdownAfterFinish && Config()->m_SvWaitUntilShutdownAfterFinish > secondsElapsed)
+        {
+            char aBuf[256];
+            str_format(aBuf, sizeof(aBuf), "Server will shutdown in %0.2f", (float)Config()->m_SvWaitUntilShutdownAfterFinish - secondsElapsed);
+
+            SendBroadcast(aBuf, -1);
+        }
+    }
 }
 
 static int PlayerFlags_SevenToSix(int Flags)
