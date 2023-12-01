@@ -3069,8 +3069,7 @@ int CServer::Run()
 			// ddts
 			if(m_FinishTick != -1 && Config()->m_SvShutdownAfterFinish && Config()->m_SvWaitUntilShutdownAfterFinish < (Tick() - m_FinishTick) / TickSpeed())
 			{
-				ddts::Shutdown(std::stoi(Config()->m_SvHappeningId));
-
+				//ddts::Shutdown(std::stoi(Config()->m_SvHappeningId));
 				break;
 			}
 		}
