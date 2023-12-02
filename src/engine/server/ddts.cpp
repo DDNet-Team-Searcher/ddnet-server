@@ -72,7 +72,7 @@ void CDDTS::Shutdown()
 		(void)connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
 		Request request;
-		request.set_action(::Action::SHUTDOWN);
+		request.set_action(Request_Action::Request_Action_SHUTDOWN);
 		request.set_id(m_HappeningId);
 		request.set_origin(::Origin::DDNET);
 
