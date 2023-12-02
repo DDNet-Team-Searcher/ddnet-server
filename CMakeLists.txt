@@ -1840,17 +1840,29 @@ add_custom_command(OUTPUT "src/game/generated/wordlist.h"
 # DDTS
 ########################################################################
 
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/src/protos)
+
 add_custom_command(
-  OUTPUT src/game/protos/request.pb.h src/game/protos/request.pb.cc
+  OUTPUT
+      src/protos/request.pb.h
+      src/protos/request.pb.cc
+      src/protos/response.pb.h
+      src/protos/response.pb.cc
+      src/protos/common.pb.cc
+      src/protos/common.pb.h
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/datasrc
   COMMAND protoc protos/*.proto
-  --cpp_out=${PROJECT_BINARY_DIR}/src
+  --cpp_out=${PROJECT_BINARY_DIR}/src/protos
+  --proto_path=./protos
 )
 
 set(PROTO_SRC
   src/protos/request.pb.h
   src/protos/request.pb.cc
-  #gottem
+  src/protos/response.pb.h
+  src/protos/response.pb.cc
+  src/protos/common.pb.cc
+  src/protos/common.pb.h
 )
 
 ########################################################################

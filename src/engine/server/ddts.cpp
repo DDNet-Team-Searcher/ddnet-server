@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 #include "ddts.h"
+#include "protos/common.pb.h"
 #include <protos/request.pb.h>
 
 const int PORT = 42069;
@@ -73,6 +74,7 @@ void CDDTS::Shutdown()
 		Request request;
 		request.set_action(::Action::SHUTDOWN);
 		request.set_id(m_HappeningId);
+		request.set_origin(::Origin::DDNET);
 
 		const size_t size = request.ByteSizeLong();
 		char *bytes = new char[size];
