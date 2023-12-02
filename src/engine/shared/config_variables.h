@@ -683,3 +683,4 @@ MACRO_CONFIG_INT(ClVideoRecorderFPS, cl_video_recorder_fps, 60, 1, 1000, CFGFLAG
 MACRO_CONFIG_INT(SvShutdownAfterFinish, sv_shutdown_after_finish, 1, 0, 1, CFGFLAG_SERVER, "Whether to shutdown the server after players finish the map.")
 MACRO_CONFIG_INT(SvWaitUntilShutdownAfterFinish, sv_wait_until_shutdown_after_finish, 5, 0, 65536, CFGFLAG_SERVER, "Time in second before shutdown after finishing the map.")
 MACRO_CONFIG_STR(SvHappeningId, sv_happening_id, 256, "", CFGFLAG_SERVER, "Happening id as a string")
+MACRO_CONFIG_STR(SvId, sv_id, 256, "", CFGFLAG_SERVER, "Server's id")

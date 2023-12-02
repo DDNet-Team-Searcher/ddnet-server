@@ -1218,7 +1218,7 @@ void CGameContext::OnTick()
     // I focken will
 
     // ddts
-    if(Server()->m_FinishTick != -1)
+    if(Server()->m_FinishTick != -1 && Config()->m_SvShutdownAfterFinish)
     {
         float secondsElapsed = (float)(Server()->Tick() - Server()->m_FinishTick) / (float)Server()->TickSpeed();
 

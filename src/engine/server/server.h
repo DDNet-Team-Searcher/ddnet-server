@@ -110,6 +110,9 @@ class CServer : public IServer
 	class IEngineAntibot *m_pAntibot;
 	class IRegister *m_pRegister;
 
+	// ddts
+	class CDDTS *m_pDDTS;
+
 #if defined(CONF_UPNP)
 	CUPnP m_UPnP;
 #endif
@@ -135,6 +138,9 @@ public:
 	class IStorage *Storage() { return m_pStorage; }
 	class IEngineAntibot *Antibot() { return m_pAntibot; }
 	class CDbConnectionPool *DbPool() { return m_pConnectionPool; }
+
+	// ddts
+	class CDDTS *DDTS() { return m_pDDTS; }
 
 	enum
 	{
@@ -242,8 +248,8 @@ public:
 	IEngineMap *m_pMap;
 
 	int64_t m_GameStartTime;
-	//int m_CurrentGameTick;
-    //int m_FinishTick;
+	// int m_CurrentGameTick;
+	// int m_FinishTick;
 
 	enum
 	{
@@ -313,9 +319,9 @@ public:
 
 	void DemoRecorder_HandleAutoStart() override;
 
-	//int Tick()
+	// int Tick()
 	int64_t TickStartTime(int Tick);
-	//int TickSpeed()
+	// int TickSpeed()
 
 	int Init();
 

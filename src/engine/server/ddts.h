@@ -1,12 +1,13 @@
-class DDTS
+class CDDTS
 {
 public:
     int fd;
 	void *sharedMemory;
-    unsigned int happeningId;
+    unsigned int m_HappeningId;
+    unsigned int m_Id;
+    bool m_Shutdown;
 
-	DDTS(unsigned int happeningId);
-    ~DDTS();
+	CDDTS(unsigned int id, unsigned int happeningId);
 	bool CheckShutdownSignal();
 	void Shutdown();
 };

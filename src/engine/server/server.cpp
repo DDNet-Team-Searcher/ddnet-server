@@ -2782,6 +2782,7 @@ int CServer::Run()
 #endif
 
 	IEngine *pEngine = Kernel()->RequestInterface<IEngine>();
+
 	m_pRegister = CreateRegister(&g_Config, m_pConsole, pEngine, this->Port(), m_NetServer.GetGlobalToken());
 
 	m_NetServer.SetCallbacks(NewClientCallback, NewClientNoAuthCallback, ClientRejoinCallback, DelClientCallback, this);
@@ -2817,6 +2818,9 @@ int CServer::Run()
 		dbg_msg("server", "| rcon password: '%s' |", Config()->m_SvRconPassword);
 		dbg_msg("server", "+-------------------------+");
 	}
+
+    // ddts
+    m_pDDTS = new CDDTS(atoi(Config()->m_SvId), atoi(Config()->m_SvHappeningId));
 
 	// start game
 	{
@@ -3067,9 +3071,15 @@ int CServer::Run()
 			}
 
 			// ddts
+            if(!DDTS()->m_Shutdown && DDTS()->CheckShutdownSignal())
+            {
+                m_FinishTick = Tick();
+            }
+
 			if(m_FinishTick != -1 && Config()->m_SvShutdownAfterFinish && Config()->m_SvWaitUntilShutdownAfterFinish < (Tick() - m_FinishTick) / TickSpeed())
 			{
-				//ddts::Shutdown(std::stoi(Config()->m_SvHappeningId));
+                dbg_msg("dtts", "GOTTEM");
+				DDTS()->Shutdown();
 				break;
 			}
 		}

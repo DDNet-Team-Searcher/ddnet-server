@@ -21,8 +21,8 @@ const std::string HOST = "127.0.0.1";
 const std::string SHM_NAME = "/ddts2";
 const size_t SHM_SIZE = 10;
 
-DDTS::DDTS(unsigned int happeningId) :
-	happeningId(happeningId)
+CDDTS::CDDTS(unsigned int id, unsigned int happeningId) :
+	m_HappeningId(happeningId), m_Id(id), m_Shutdown(false)
 {
 	fd = shm_open(SHM_NAME.c_str(), O_CREAT | O_RDWR, S_IRUSR | S_IWUSR | S_IXUSR);
 
@@ -30,6 +30,7 @@ DDTS::DDTS(unsigned int happeningId) :
 
 	if(fd == -1)
 	{
+		dbg_msg("ddts", "error");
 		// not gonna lie, we are fucked
 	}
 
@@ -37,50 +38,58 @@ DDTS::DDTS(unsigned int happeningId) :
 
 	if(sharedMemory == MAP_FAILED)
 	{
+		dbg_msg("ddts", "mmap error");
 		// not gonna lie, we are fucked
 	}
 }
 
-bool DDTS::CheckShutdownSignal()
+bool CDDTS::CheckShutdownSignal()
 {
 	char *mem = static_cast<char *>(sharedMemory);
 
-	if(mem[happeningId] == 1)
+	if(mem[m_Id] == 1)
 	{
+		m_Shutdown = true;
 		return true;
 	}
 
 	return false;
 }
 
-void DDTS::Shutdown()
+void CDDTS::Shutdown()
 {
-	sockaddr_in serv_addr;
-	int sock = socket(AF_INET, SOCK_STREAM, 0);
+	if(!m_Shutdown)
+	{
+		sockaddr_in serv_addr;
+		int sock = socket(AF_INET, SOCK_STREAM, 0);
 
-	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_port = htons(PORT);
+		serv_addr.sin_family = AF_INET;
+		serv_addr.sin_port = htons(PORT);
 
-	inet_pton(AF_INET, HOST.data(), &serv_addr.sin_addr);
+		inet_pton(AF_INET, HOST.data(), &serv_addr.sin_addr);
 
-	(void)connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+		(void)connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
-	Request request;
-	request.set_action(::Action::SHUTDOWN);
-	request.set_id(happeningId);
+		Request request;
+		request.set_action(::Action::SHUTDOWN);
+		request.set_id(m_HappeningId);
 
-	const size_t size = request.ByteSizeLong();
-	char *bytes = new char[size];
+		const size_t size = request.ByteSizeLong();
+		char *bytes = new char[size];
 
-	request.SerializeToArray(bytes, size);
+		request.SerializeToArray(bytes, size);
 
-	send(sock, bytes, size, 0);
+		send(sock, bytes, size, 0);
 
-	std::vector<char> gottem(1024);
+		std::vector<char> gottem(1024);
+
+		// wait for the response owo. works for now
+		recv(sock, gottem.data(), gottem.size(), 0);
+	}
+
+	char *mem = static_cast<char *>(sharedMemory);
+	mem[m_Id] = 0;
 
 	munmap(sharedMemory, SHM_SIZE);
 	close(fd);
-
-	// wait for the response owo. works for now
-	recv(sock, gottem.data(), gottem.size(), 0);
 }
