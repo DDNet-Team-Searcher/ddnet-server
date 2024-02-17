@@ -6,7 +6,6 @@
 #include <cstdio>
 #include <cstring>
 #include <fcntl.h>
-#include <iostream>
 #include <netinet/in.h>
 #include <string>
 #include <sys/mman.h>
