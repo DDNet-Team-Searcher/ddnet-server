@@ -839,8 +839,8 @@ void CGameTeams::OnFinish(CPlayer *Player, float Time, const char *pTimestamp)
 		Player->m_Score = TTime;
 	}
 
-    // ddts
-    Server()->m_FinishTick = Server()->Tick();
+	// ddts
+	Server()->m_FinishTick = Server()->Tick();
 }
 
 void CGameTeams::RequestTeamSwap(CPlayer *pPlayer, CPlayer *pTargetPlayer, int Team)

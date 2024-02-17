@@ -2819,8 +2819,8 @@ int CServer::Run()
 		dbg_msg("server", "+-------------------------+");
 	}
 
-    // ddts
-    m_pDDTS = new CDDTS(atoi(Config()->m_SvId), atoi(Config()->m_SvHappeningId));
+	// ddts
+	m_pDDTS = new CDDTS(atoi(Config()->m_SvId), atoi(Config()->m_SvHappeningId));
 
 	// start game
 	{
@@ -3071,14 +3071,14 @@ int CServer::Run()
 			}
 
 			// ddts
-            if(!DDTS()->m_Shutdown && DDTS()->CheckShutdownSignal())
-            {
-                m_FinishTick = Tick();
-            }
+			if(!DDTS()->m_Shutdown && DDTS()->CheckShutdownSignal())
+			{
+				m_FinishTick = Tick();
+			}
 
 			if(m_FinishTick != -1 && Config()->m_SvShutdownAfterFinish && Config()->m_SvWaitUntilShutdownAfterFinish < (Tick() - m_FinishTick) / TickSpeed())
 			{
-                dbg_msg("dtts", "GOTTEM");
+				dbg_msg("dtts", "GOTTEM");
 				DDTS()->Shutdown();
 				break;
 			}
