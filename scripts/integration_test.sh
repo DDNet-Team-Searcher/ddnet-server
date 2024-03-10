@@ -185,7 +185,8 @@ function wait_for_launch() {
 
 echo "[*] Launch server"
 $tool ../DDNet-Server \
-	"sv_input_fifo server.fifo;
+    "sv_shutdown_after_finish 0;
+	sv_input_fifo server.fifo;
 	sv_rcon_password rcon;
 	sv_map coverage;
 	sv_sqlite_file ddnet-server.sqlite;
@@ -279,6 +280,12 @@ fi
 
 # Kill all processes first so all outputs are fully written
 kill_all
+
+cat server.log
+cat stdout_client1.txt
+cat stderr_client1.txt
+cat stdout_client2.txt
+cat stderr_client2.txt
 
 if ! grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2} ([0-9]{2}:){2}[0-9]{2} I chat: 0:-2:client1: hello world$' server.log
 then
