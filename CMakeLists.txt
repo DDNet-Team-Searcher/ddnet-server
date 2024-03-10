@@ -1859,7 +1859,6 @@ add_custom_command(
   COMMAND protoc protos/*.proto
   --cpp_out=${PROJECT_BINARY_DIR}/src/protos
   --proto_path=./protos
-  --experimental_allow_proto3_optional=true
 )
 
 set(PROTO_GENERATED
