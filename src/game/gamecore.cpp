@@ -6,6 +6,7 @@
 #include "mapitems.h"
 #include "teamscore.h"
 
+#include <base/system.h>
 #include <engine/shared/config.h>
 
 const char *CTuningParams::ms_apNames[] =
@@ -364,7 +365,7 @@ void CCharacterCore::Tick(bool UseInput, bool DoDeferredTick)
 			// release_hooked();
 		}
 
-		// don't do this hook rutine when we are hook to a player
+		// don't do this hook routine when we are already hooked to a player
 		if(m_HookedPlayer == -1 && distance(m_HookPos, m_Pos) > 46.0f)
 		{
 			vec2 HookVel = normalize(m_HookPos - m_Pos) * m_Tuning.m_HookDragAccel;
@@ -546,7 +547,7 @@ void CCharacterCore::Move()
 	m_Pos = NewPos;
 }
 
-void CCharacterCore::Write(CNetObj_CharacterCore *pObjCore)
+void CCharacterCore::Write(CNetObj_CharacterCore *pObjCore) const
 {
 	pObjCore->m_X = round_to_int(m_Pos.x);
 	pObjCore->m_Y = round_to_int(m_Pos.y);

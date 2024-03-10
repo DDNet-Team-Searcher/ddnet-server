@@ -130,7 +130,7 @@ public:
 	/*
 
 	*/
-	virtual bool CanBeMovedOnBalance(int ClientID);
+	virtual bool CanBeMovedOnBalance(int ClientId);
 
 	virtual void Tick();
 
@@ -144,13 +144,14 @@ public:
 
 	*/
 	virtual const char *GetTeamName(int Team);
-	virtual int GetAutoTeam(int NotThisID);
-	virtual bool CanJoinTeam(int Team, int NotThisID);
+	virtual int GetAutoTeam(int NotThisId);
+	virtual bool CanJoinTeam(int Team, int NotThisId, char *pErrorReason, int ErrorReasonSize);
 	int ClampTeam(int Team);
 
-	CClientMask GetMaskForPlayerWorldEvent(int Asker, int ExceptID = -1);
+	CClientMask GetMaskForPlayerWorldEvent(int Asker, int ExceptId = -1);
 	virtual void InitTeleporter();
 
+	bool IsTeamPlay() { return m_GameFlags & GAMEFLAG_TEAMS; }
 	// DDRace
 
 	float m_CurrentRecord;

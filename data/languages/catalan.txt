@@ -21,9 +21,6 @@
 %s wins!
 == ¡%s ha guanyat!
 
--Page %d-
-== -Pàgina %d-
-
 Abort
 == Cancelar
 
@@ -401,9 +398,6 @@ The audio device couldn't be initialised.
 The server is running a non-standard tuning on a pure game type.
 == El servidor està utilitzant una modificació en un mode de joc estàndard
 
-There's an unsaved map in the editor, you might want to save it before you quit the game.
-== Tens un mapa sense guardar a l'editor, segurament vols guardar-lo abans de sortir.
-
 Time limit
 == Temps límit
 
@@ -512,9 +506,6 @@ Your skin
 Reset to defaults
 == Restaurar als valors predeterminats
 
-Quit anyway?
-== Sortir igualment?
-
 Round
 == Ronda
 
@@ -535,9 +526,6 @@ Name plates size
 
 Ratio
 == Proporció
-
-Dummy settings
-== Configuració del maniquí
 
 AntiPing
 == AntiPing
@@ -592,9 +580,6 @@ Enable game sounds
 
 DDNet Client needs to be restarted to complete update!
 == El client DDNet necessita reiniciar-se per completar l'actualització!
-
-Please use a different filename
-== 
 
 Show others
 == Mostrar altres
@@ -962,9 +947,6 @@ Auto
 Replay
 == Repetició
 
-Saving ddnet-settings.cfg failed
-== Ha fallat el guardat del fitxer ddnet-settings.cfg
-
 The width of texture %s is not divisible by %d, or the height is not divisible by %d, which might cause visual bugs.
 == La mida de la textura %s no es divisible per %d, o l'altura no es divisible per %d, el qual pot resultar en errors visuals.
 
@@ -1060,9 +1042,6 @@ Background music volume
 
 Assets
 == Arxius
-
-Kill Messages
-== Missatges al matar
 
 Use old chat style
 == Utilitzar l'estil antic del xat
@@ -1230,6 +1209,15 @@ Could not save downloaded map. Try manually deleting this file: %s
 Error playing demo
 == 
 
+Failed saving the replay!
+== 
+
+Saving settings to '%s' failed
+== 
+
+Error saving settings
+== 
+
 Preparing demo playback
 == 
 
@@ -1260,6 +1248,39 @@ Quitting. Please wait…
 Restarting. Please wait…
 == 
 
+Loading skin files
+== 
+
+Searching
+== 
+
+Enter Username
+== 
+
+Enter Password
+== 
+
+NOT CONNECTED
+== 
+
+Match %d of %d
+== 
+
+No results
+== 
+
+Lines %d - %d (%s)
+== 
+
+Locked
+== 
+
+Following
+== 
+
+Loading commands…
+== 
+
 Position:
 == 
 
@@ -1287,6 +1308,12 @@ Some map sounds could not be loaded. Check the local console for details.
 Loading menu themes
 == 
 
+Press a key…
+== 
+
+Main menu
+== 
+
 Trying to determine UDP connectivity...
 == 
 
@@ -1311,6 +1338,15 @@ Rename folder
 Render complete
 == 
 
+Are you sure that you want to restart?
+== 
+
+There's an unsaved map in the editor, you might want to save it.
+== 
+
+Continue anyway?
+== 
+
 A demo with this name already exists
 == 
 
@@ -1333,6 +1369,9 @@ Video was saved to '%s'
 == 
 
 Loading menu images
+== 
+
+Communities
 == 
 
 Copy info
@@ -1370,6 +1409,12 @@ Are you sure that you want to remove the clan '%s' from your friends list?
 == 
 
 Add Clan
+== 
+
+Server filter
+== 
+
+Friends
 == 
 
 Play the current demo
@@ -1443,6 +1488,9 @@ Cut length
 Render cut to video
 == 
 
+Please use a different filename
+== 
+
 Loading demo files
 == 
 
@@ -1483,6 +1531,9 @@ Unable to delete the demo '%s'
 Unable to delete the folder '%s'. Make sure it's empty first.
 == 
 
+Loading…
+== 
+
 Loading ghost files
 == 
 
@@ -1510,19 +1561,13 @@ Open the directory that contains the configuration and user files
 Open the directory to add custom themes
 == 
 
-Toggle to edit your dummy settings
-== 
-
-Loading skin files
-== 
-
 Download community skins
 == 
 
-Choose default eyes when joining a server
+Create a random skin
 == 
 
-Create a random skin
+Choose default eyes when joining a server
 == 
 
 Open the directory to add custom skins
@@ -1599,7 +1644,13 @@ Name Plate
 Hook Collisions
 == 
 
+Info Messages
+== 
+
 Show health, shields and ammo
+== 
+
+Show local time always
 == 
 
 DDRace HUD
@@ -1632,7 +1683,19 @@ Show freeze bars
 Opacity of freeze bars inside freeze
 == 
 
+Chat font size
+== 
+
+Chat width
+== 
+
 Show hook strength indicator
+== 
+
+Authed name color in scoreboard
+== 
+
+Same clan color in scoreboard
 == 
 
 Hook collision line
@@ -1657,6 +1720,9 @@ Something hookable
 == 
 
 A Tee
+== 
+
+Show finish messages
 == 
 
 Normal Color

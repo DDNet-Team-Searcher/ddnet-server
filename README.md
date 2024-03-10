@@ -158,7 +158,7 @@ This library isn't compiled, so you have to do it:
 sudo apt install libgtest-dev
 cd /usr/src/gtest
 sudo cmake CMakeLists.txt
-sudo make -j8
+sudo make -j$(nproc)
 
 # copy or symlink libgtest.a and libgtest_main.a to your /usr/lib folder
 sudo cp lib/*.a /usr/lib
@@ -201,7 +201,7 @@ Building on Windows with Visual Studio
 
 Download and install some version of [Microsoft Visual Studio](https://www.visualstudio.com/) (as of writing, MSVS Community 2017) with **C++ support**, install [Python 3](https://www.python.org/downloads/) **for all users** and install [CMake](https://cmake.org/download/#latest). You also need to install [Rust](https://rustup.rs/).
 
-Start CMake and select the source code folder (where DDNet resides, the directory with `CMakeLists.txt`). Additionally select a build folder, e.g. create a build subdirectory in the source code directory. Click "Configure" and select the Visual Studio generator (it should be pre-selected, so pressing "Finish" will suffice). After configuration finishes and the "Generate" reactivates, click it. When that finishes, click "Open Project". Visual Studio should open. You can compile the DDNet client by right-clicking the DDNet project (not the solution) and select "Select as StartUp project". Now you should be able to compile DDNet by clicking the green, triangular "Run" button.
+Start CMake and select the source code folder (where DDNet resides, the directory with `CMakeLists.txt`). Additionally select a build folder, e.g. create a build subdirectory in the source code directory. Click "Configure" and select the Visual Studio generator (it should be pre-selected, so pressing "Finish" will suffice). After configuration finishes and the "Generate" reactivates, click it. When that finishes, click "Open Project". Visual Studio should open. You can compile the DDNet client by right-clicking the "game-client" project and select "Set as Startup project". Now you should be able to compile DDNet by clicking the green, triangular "Run" button.
 
 Cross-compiling on Linux to Windows x86/x86\_64
 -----------------------------------------------
@@ -287,7 +287,7 @@ add_sqlserver w teeworlds record teeworlds "PW2" "localhost" "3306"
 $ mkdir build
 $ cd build
 $ cmake -DMYSQL=ON ..
-$ make -j8
+$ make -j$(nproc)
 $ ./DDNet-Server -f mine.cfg
 ```
 

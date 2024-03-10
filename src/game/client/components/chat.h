@@ -30,7 +30,7 @@ class CChat : public CComponent
 	{
 		int64_t m_Time;
 		float m_aYOffset[2];
-		int m_ClientID;
+		int m_ClientId;
 		int m_TeamNumber;
 		bool m_Team;
 		bool m_Whisper;
@@ -88,7 +88,7 @@ class CChat : public CComponent
 	static char ms_aDisplayText[MAX_LINE_LENGTH];
 	struct CRateablePlayer
 	{
-		int ClientID;
+		int ClientId;
 		int Score;
 	};
 	CRateablePlayer m_aPlayerCompletionList[MAX_CLIENTS];
@@ -96,21 +96,25 @@ class CChat : public CComponent
 
 	struct CCommand
 	{
-		const char *m_pName;
-		const char *m_pParams;
+		char m_aName[IConsole::TEMPCMD_NAME_LENGTH];
+		char m_aParams[IConsole::TEMPCMD_PARAMS_LENGTH];
+		char m_aHelpText[IConsole::TEMPCMD_HELP_LENGTH];
 
 		CCommand() = default;
-		CCommand(const char *pName, const char *pParams) :
-			m_pName(pName), m_pParams(pParams)
+		CCommand(const char *pName, const char *pParams, const char *pHelpText)
 		{
+			str_copy(m_aName, pName);
+			str_copy(m_aParams, pParams);
+			str_copy(m_aHelpText, pHelpText);
 		}
 
-		bool operator<(const CCommand &Other) const { return str_comp(m_pName, Other.m_pName) < 0; }
-		bool operator<=(const CCommand &Other) const { return str_comp(m_pName, Other.m_pName) <= 0; }
-		bool operator==(const CCommand &Other) const { return str_comp(m_pName, Other.m_pName) == 0; }
+		bool operator<(const CCommand &Other) const { return str_comp(m_aName, Other.m_aName) < 0; }
+		bool operator<=(const CCommand &Other) const { return str_comp(m_aName, Other.m_aName) <= 0; }
+		bool operator==(const CCommand &Other) const { return str_comp(m_aName, Other.m_aName) == 0; }
 	};
 
 	std::vector<CCommand> m_vCommands;
+	bool m_CommandsNeedSorting;
 
 	struct CHistoryEntry
 	{
@@ -125,6 +129,8 @@ class CChat : public CComponent
 	bool m_IsInputCensored;
 	char m_aCurrentInputText[MAX_LINE_LENGTH];
 	bool m_EditingNewLine;
+
+	bool m_ServerSupportsCommandInfo;
 
 	static void ConSay(IConsole::IResult *pResult, void *pUserData);
 	static void ConSayTeam(IConsole::IResult *pResult, void *pUserData);
@@ -146,19 +152,20 @@ public:
 	static constexpr float MESSAGE_TEE_PADDING_RIGHT = 0.5f;
 
 	bool IsActive() const { return m_Mode != MODE_NONE; }
-	void AddLine(int ClientID, int Team, const char *pLine);
+	void AddLine(int ClientId, int Team, const char *pLine);
 	void EnableMode(int Team);
 	void DisableMode();
 	void Say(int Team, const char *pLine);
 	void SayChat(const char *pLine);
-	void RegisterCommand(const char *pName, const char *pParams, int flags, const char *pHelp);
+	void RegisterCommand(const char *pName, const char *pParams, const char *pHelpText);
+	void UnregisterCommand(const char *pName);
 	void Echo(const char *pString);
 
 	void OnWindowResize() override;
 	void OnConsoleInit() override;
 	void OnStateChange(int NewState, int OldState) override;
+	void OnRefreshSkins() override;
 	void OnRender() override;
-	void RefindSkins();
 	void OnPrepareLines(float y);
 	void Reset();
 	void OnRelease() override;

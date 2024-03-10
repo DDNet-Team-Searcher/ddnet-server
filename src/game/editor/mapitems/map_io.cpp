@@ -36,7 +36,8 @@ struct CSoundSource_DEPRECATED
 bool CEditorMap::Save(const char *pFileName)
 {
 	char aFileNameTmp[IO_MAX_PATH_LENGTH];
-	str_format(aFileNameTmp, sizeof(aFileNameTmp), "%s.%d.tmp", pFileName, pid());
+	IStorage::FormatTmpPath(aFileNameTmp, sizeof(aFileNameTmp), pFileName);
+
 	char aBuf[IO_MAX_PATH_LENGTH + 64];
 	str_format(aBuf, sizeof(aBuf), "saving to '%s'...", aFileNameTmp);
 	m_pEditor->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "editor", aBuf);
@@ -146,6 +147,7 @@ bool CEditorMap::Save(const char *pFileName)
 		Item.m_External = 0;
 		Item.m_SoundName = Writer.AddDataString(pSound->m_aName);
 		Item.m_SoundData = Writer.AddData(pSound->m_DataSize, pSound->m_pData);
+		// Value is not read in new versions, but we still need to write it for compatibility with old versions.
 		Item.m_SoundDataSize = pSound->m_DataSize;
 
 		Writer.AddItem(MAPITEMTYPE_SOUND, i, sizeof(Item), &Item);
@@ -426,9 +428,9 @@ bool CEditorMap::Load(const char *pFileName, int StorageType, const std::functio
 		for(int i = Start; i < Start + Num; i++)
 		{
 			int ItemSize = DataFile.GetItemSize(Start);
-			int ItemID;
-			CMapItemInfoSettings *pItem = (CMapItemInfoSettings *)DataFile.GetItem(i, nullptr, &ItemID);
-			if(!pItem || ItemID != 0)
+			int ItemId;
+			CMapItemInfoSettings *pItem = (CMapItemInfoSettings *)DataFile.GetItem(i, nullptr, &ItemId);
+			if(!pItem || ItemId != 0)
 				continue;
 
 			const auto &&ReadStringInfo = [&](int Index, char *pBuffer, size_t BufferSize, const char *pErrorContext) {
@@ -522,7 +524,7 @@ bool CEditorMap::Load(const char *pFileName, int StorageType, const std::functio
 				// copy image data
 				void *pData = DataFile.GetData(pItem->m_ImageData);
 				const size_t DataSize = (size_t)pImg->m_Width * pImg->m_Height * CImageInfo::PixelSize(Format);
-				pImg->m_pData = malloc(DataSize);
+				pImg->m_pData = static_cast<uint8_t *>(malloc(DataSize));
 				mem_copy(pImg->m_pData, pData, DataSize);
 				int TextureLoadFlag = m_pEditor->Graphics()->Uses2DTextureArrays() ? IGraphics::TEXLOAD_TO_2D_ARRAY_TEXTURE : IGraphics::TEXLOAD_TO_3D_TEXTURE;
 				if(pImg->m_Width % 16 != 0 || pImg->m_Height % 16 != 0)
@@ -570,18 +572,16 @@ bool CEditorMap::Load(const char *pFileName, int StorageType, const std::functio
 				// load external
 				if(m_pEditor->Storage()->ReadFile(aBuf, IStorage::TYPE_ALL, &pSound->m_pData, &pSound->m_DataSize))
 				{
-					pSound->m_SoundID = m_pEditor->Sound()->LoadOpusFromMem(pSound->m_pData, pSound->m_DataSize, true);
+					pSound->m_SoundId = m_pEditor->Sound()->LoadOpusFromMem(pSound->m_pData, pSound->m_DataSize, true);
 				}
 			}
 			else
 			{
-				pSound->m_DataSize = pItem->m_SoundDataSize;
-
-				// copy sample data
+				pSound->m_DataSize = DataFile.GetDataSize(pItem->m_SoundData);
 				void *pData = DataFile.GetData(pItem->m_SoundData);
 				pSound->m_pData = malloc(pSound->m_DataSize);
 				mem_copy(pSound->m_pData, pData, pSound->m_DataSize);
-				pSound->m_SoundID = m_pEditor->Sound()->LoadOpusFromMem(pSound->m_pData, pSound->m_DataSize, true);
+				pSound->m_SoundId = m_pEditor->Sound()->LoadOpusFromMem(pSound->m_pData, pSound->m_DataSize, true);
 			}
 
 			m_vpSounds.push_back(pSound);
@@ -916,7 +916,20 @@ bool CEditorMap::Load(const char *pFileName, int StorageType, const std::functio
 		for(int e = 0; e < EnvNum; e++)
 		{
 			CMapItemEnvelope *pItem = (CMapItemEnvelope *)DataFile.GetItem(EnvStart + e);
-			std::shared_ptr<CEnvelope> pEnv = std::make_shared<CEnvelope>(pItem->m_Channels);
+			int Channels = pItem->m_Channels;
+			if(Channels <= 0 || Channels == 2 || Channels > CEnvPoint::MAX_CHANNELS)
+			{
+				// Fall back to showing all channels if the number of channels is unsupported
+				Channels = CEnvPoint::MAX_CHANNELS;
+			}
+			if(Channels != pItem->m_Channels)
+			{
+				char aBuf[128];
+				str_format(aBuf, sizeof(aBuf), "Error: Envelope %d had an invalid number of channels, %d, which was changed to %d.", e, pItem->m_Channels, Channels);
+				ErrorHandler(aBuf);
+			}
+
+			std::shared_ptr<CEnvelope> pEnv = std::make_shared<CEnvelope>(Channels);
 			pEnv->m_vPoints.resize(pItem->m_NumPoints);
 			for(int p = 0; p < pItem->m_NumPoints; p++)
 			{

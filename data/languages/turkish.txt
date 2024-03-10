@@ -11,6 +11,7 @@
 #   h-kaan          2023-08-23 15:57:36
 #   h-kaan          2023-08-30 01:52:04
 #   h-kaan          2023-09-21 21:04:35
+#   eghwand          2024-03-03 13:24:20
 ##### /authors #####
 
 ##### translated strings #####
@@ -32,9 +33,6 @@
 
 %s wins!
 == %s kazandı!
-
--Page %d-
-== -Sayfa %d-
 
 Abort
 == İptal
@@ -405,9 +403,6 @@ The audio device couldn't be initialised.
 The server is running a non-standard tuning on a pure game type.
 == Bu sunucu standart olmayan bir ayarı saf bir oyun türünde kullanıyor.
 
-There's an unsaved map in the editor, you might want to save it before you quit the game.
-== Editörde kaydedilmemiş bir harita var, kapatmadan önce kaydetmek isteyebilirsiniz.
-
 Time limit
 == Süre limiti
 
@@ -506,9 +501,6 @@ Your skin
 
 Reset to defaults
 == Varsayılanlara getir
-
-Quit anyway?
-== Çıkmak istediğinize emin misiniz?
 
 Round
 == Raunt
@@ -642,9 +634,6 @@ Update now
 Restart
 == Yeniden başlat
 
-Please use a different filename
-== 
-
 Remove chat
 == Sohbeti kaldır
 
@@ -710,9 +699,6 @@ Automatically create statboard csv
 
 Max CSVs
 == Max CSVs
-
-Dummy settings
-== Dummy ayarları
 
 Vanilla skins only
 == Sadece vanilla skinleri
@@ -1022,9 +1008,6 @@ Could not initialize the given graphics backend, this is probably because you di
 
 Could not save downloaded map. Try manually deleting this file: %s
 == İndirilen map kaydedilemedi. Bu dosyayı manuel olarak silmeyi deneyin: %s
-
-Saving ddnet-settings.cfg failed
-== ddnet-settings.cfg dosyası kaydedilemedi
 
 The width of texture %s is not divisible by %d, or the height is not divisible by %d, which might cause visual bugs.
 == %s dokusunun genişliği %d'ye veya yüksekliği %d'ye bölünmüyor, bu görsel hatalara neden olabilir.
@@ -1342,9 +1325,6 @@ Open the directory to add custom themes
 Loading skin files
 == Skin dosyaları yükleniyor
 
-Toggle to edit your dummy settings
-== Dummy ayarlarını düzenle
-
 Download skins
 == Skinleri indir
 
@@ -1478,9 +1458,6 @@ Name Plate
 
 Hook Collisions
 == Kanca kesişmeleri
-
-Kill Messages
-== Ölüm mesajları
 
 Show health, shields and ammo
 == Can, kalkan ve cephaneyi göster 
@@ -1705,56 +1682,146 @@ Render cut to video
 == Kesiti videoya dönüştür
 
 Error playing demo
-== 
+== Demo oynatırken hata oluştu
+
+Failed saving the replay!
+== Failed saving the replay!
+
+Saving settings to '%s' failed
+== Ayarlar '%s' dosyasına kaydedilemedi
+
+Error saving settings
+== Ayarları kaydederken hata oluştu
+
+Searching
+== Aranıyor
+
+Enter Username
+== Kullanıcı adı girin
+
+Enter Password
+== Şifre girin
+
+NOT CONNECTED
+== BAĞLI DEĞİL
+
+Match %d of %d
+== Match %d of %d
+
+No results
+== Sonuç yok
+
+Lines %d - %d (%s)
+== Satır %d - %d (%s)
+
+Locked
+== Sabit
+
+Following
+== Takipte
+
+Loading commands…
+== Komutlar yükleniyor…
 
 Some map images could not be loaded. Check the local console for details.
-== 
+== Bazı görseller yüklenemedi. Detaylar için konsolu kontrol edin.
 
 Some map sounds could not be loaded. Check the local console for details.
-== 
+== Bazı sesler yüklenemedi. Detaylar için konsolu kontrol edin.
 
 Loading menu themes
-== 
+== Temalar yükleniyor
+
+Press a key…
+== Bir tuşa basın…
+
+Main menu
+== Ana menü
 
 Render complete
-== 
+== Video işleme tamamlandı
+
+Are you sure that you want to restart?
+== Yeniden başlatmak istediğinizden eminmisiniz?
+
+There's an unsaved map in the editor, you might want to save it.
+== Editörde kaydedilmemiş bir harita var, kaydetmek isteyebilirsiniz
+
+Continue anyway?
+== Yine de devam et
 
 Videos directory
-== 
+== Video dizini
 
 Video was saved to '%s'
-== 
+== Video '%s' yoluna kaydedildi
+
+Communities
+== Topluluklar
+
+Server filter
+== Sunucu filtresi
+
+Friends
+== Arkadaşlar
+
+Please use a different filename
+== Farklı bir dosya adı kullanın
 
 No demo selected
-== 
+== Demo seçilmedi
 
 Created
-== 
+== Oluşturuldu
 
 Netversion
 == 
 
 [Demo details]
 map not included
-== 
+== Harita dahil değil
+
+Loading…
+== Yükleniyor…
 
 Ghosts directory
-== 
+== Hayalet dizini
 
 Activate all
-== 
+== Tümünü etkinleştir
 
 Deactivate all
-== 
+== Tümünü devre dışı bırak
+
+Info Messages
+== Bilgi Mesajları
+
+Show local time always
+== Yerel saati her zaman göster
+
+Chat font size
+== Yazı tipi büyüklüğü
+
+Chat width
+== Sohbet genişliği
+
+Authed name color in scoreboard
+== Skor tablosunda yetkili isim rengi
+
+Same clan color in scoreboard
+== Skor tablosunda aynı klan rengi
+
+Show finish messages
+== Bitirme mesajlarını göster
 
 Enable ghost
-== 
+== Hayaleti etkinleştir
 
 Only save improvements
-== 
+== Sadece iyileştirmeleri kaydet
 
 Regular background color
-== 
+== Normal arka plan rengi
 
 Entities background color
-== 
+== Yapı arka plan rengi
