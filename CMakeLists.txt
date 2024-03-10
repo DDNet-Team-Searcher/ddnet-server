@@ -1843,6 +1843,8 @@ add_custom_command(OUTPUT "src/game/generated/wordlist.h"
 # DDTS
 ########################################################################
 
+message("${Protobuf_VERSION}")
+
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/src/protos)
 
 add_custom_command(
@@ -1857,9 +1859,10 @@ add_custom_command(
   COMMAND protoc protos/*.proto
   --cpp_out=${PROJECT_BINARY_DIR}/src/protos
   --proto_path=./protos
+  --experimental_allow_proto3_optional=true
 )
 
-set(PROTO_SRC
+set(PROTO_GENERATED
   src/protos/request.pb.h
   src/protos/request.pb.cc
   src/protos/response.pb.h
@@ -2624,7 +2627,7 @@ if(SERVER)
     "src/game/generated/server_data.h"
     "src/game/generated/wordlist.h"
   )
-  set(SERVER_SRC ${ENGINE_SERVER} ${GAME_SERVER} ${GAME_GENERATED_SERVER} ${PROTO_SRC})
+  set(SERVER_SRC ${ENGINE_SERVER} ${GAME_SERVER} ${GAME_GENERATED_SERVER} ${PROTO_GENERATED})
   if(TARGET_OS STREQUAL "windows")
     set(SERVER_ICON "other/icons/DDNet-Server.rc")
   else()
