@@ -26,13 +26,8 @@ CDDTS::CDDTS(unsigned int id, unsigned int happeningId) :
 {
 	fd = shm_open(SHM_NAME.c_str(), O_CREAT | O_RDWR, S_IRUSR | S_IWUSR | S_IXUSR);
 
-	ftruncate(fd, SHM_SIZE);
-
-	if(fd == -1)
-	{
-		dbg_msg("ddts", "error");
-		// not gonna lie, we are fucked
-	}
+    dbg_assert(fd != -1, "Failed to get shared memory fd");
+    dbg_assert(!ftruncate(fd, SHM_SIZE), "Failed to resize shared memory fd");
 
 	sharedMemory = mmap(0, SHM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 
