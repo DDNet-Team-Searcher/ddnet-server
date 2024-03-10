@@ -545,7 +545,7 @@ if(SECURITY_COMPILER_FLAGS)
 endif()
 
 # ddts
-find_package(protobuf CONFIG REQUIRED)
+find_package(Protobuf REQUIRED)
 
 if(TARGET_OS AND TARGET_OS STREQUAL "mac")
   find_program(CMAKE_OTOOL otool)
