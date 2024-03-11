@@ -545,7 +545,7 @@ if(SECURITY_COMPILER_FLAGS)
 endif()
 
 # ddts
-find_package(Protobuf REQUIRED)
+find_package(Protobuf CONFIG REQUIRED)
 
 if(TARGET_OS AND TARGET_OS STREQUAL "mac")
   find_program(CMAKE_OTOOL otool)
@@ -1843,31 +1843,19 @@ add_custom_command(OUTPUT "src/game/generated/wordlist.h"
 # DDTS
 ########################################################################
 
-message("${Protobuf_VERSION}")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/src/protos")
+file(GLOB PROTO_SOURCE "${PROJECT_SOURCE_DIR}/datasrc/protos/*.proto")
 
-file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/src/protos)
+add_library(Proto OBJECT "${PROTO_SOURCE}")
+target_link_libraries(Proto PUBLIC protobuf::libprotobuf)
+target_include_directories(Proto PUBLIC "$<BUILD_INTERFACE:${PROTO_BINARY_DIR}>")
+set(PROTO_BINARY_DIR "${PROJECT_BINARY_DIR}/src/protos")
 
-add_custom_command(
-  OUTPUT
-      src/protos/request.pb.h
-      src/protos/request.pb.cc
-      src/protos/response.pb.h
-      src/protos/response.pb.cc
-      src/protos/common.pb.cc
-      src/protos/common.pb.h
-  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/datasrc
-  COMMAND protoc protos/*.proto
-  --cpp_out=${PROJECT_BINARY_DIR}/src/protos
-  --proto_path=./protos
-)
-
-set(PROTO_GENERATED
-  src/protos/request.pb.h
-  src/protos/request.pb.cc
-  src/protos/response.pb.h
-  src/protos/response.pb.cc
-  src/protos/common.pb.cc
-  src/protos/common.pb.h
+protobuf_generate(
+    TARGET Proto
+    LANGUAGE cpp
+    IMPORT_DIRS "${PROJECT_SOURCE_DIR}/datasrc/protos"
+    PROTOC_OUT_DIR "${PROTO_BINARY_DIR}"
 )
 
 ########################################################################
@@ -2648,7 +2636,7 @@ if(SERVER)
     rust_engine_shared
 
     # ddts
-    protobuf::libprotobuf
+    Proto
 
     ${LIBS}
   )

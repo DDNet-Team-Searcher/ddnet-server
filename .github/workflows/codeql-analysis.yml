@@ -40,7 +40,17 @@ jobs:
       if: matrix.language == 'cpp'
       run: |
        sudo apt-get update -y
-       sudo apt-get install pkg-config cmake ninja-build libfreetype6-dev libnotify-dev libsdl2-dev libsqlite3-dev libavcodec-dev libavformat-dev libavutil-dev libswresample-dev libswscale-dev libx264-dev libmariadb-dev libwebsockets-dev libvulkan-dev glslang-tools spirv-tools protobuf-compiler -y
+       sudo apt-get install pkg-config cmake ninja-build libfreetype6-dev libnotify-dev libsdl2-dev libsqlite3-dev libavcodec-dev libavformat-dev libavutil-dev libswresample-dev libswscale-dev libx264-dev libmariadb-dev libwebsockets-dev libvulkan-dev glslang-tools spirv-tools -y
+
+    - name: Compile & install protobuf
+      run: |
+        git clone https://github.com/protocolbuffers/protobuf.git --branch v3.21.12 --single-branch
+        cd protobuf
+        git submodule update --init --recursive
+        mkdir build
+        cd build
+        cmake ${{ matrix.cmake-args }} ..
+        sudo cmake --build . --config Release --target install
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL

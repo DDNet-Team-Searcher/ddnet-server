@@ -1,8 +1,9 @@
 // WARNING: if you know how to code, please dont check this code
 // you will have a heart attack
 
-#include "base/system.h"
+#include <base/system.h>
 #include <arpa/inet.h>
+#include <cstdint>
 #include <cstdio>
 #include <cstring>
 #include <fcntl.h>
@@ -12,17 +13,16 @@
 #include <unistd.h>
 
 #include "ddts.h"
-#include "protos/common.pb.h"
+#include <protos/common.pb.h>
 #include <protos/request.pb.h>
 
-const int PORT = 42069;
 const std::string HOST = "127.0.0.1";
-
-const std::string SHM_NAME = "/ddts2";
+const std::string SHM_NAME = "/ddts";
+const uint16_t PORT = 42069;
 const size_t SHM_SIZE = 10;
 
-CDDTS::CDDTS(unsigned int id, unsigned int happeningId) :
-	m_HappeningId(happeningId), m_Id(id), m_Shutdown(false)
+CDDTS::CDDTS(unsigned int Id, unsigned int HappeningId) :
+	m_HappeningId(HappeningId), m_Id(Id), m_Shutdown(false)
 {
 	fd = shm_open(SHM_NAME.c_str(), O_CREAT | O_RDWR, S_IRUSR | S_IWUSR | S_IXUSR);
 
@@ -40,7 +40,7 @@ CDDTS::CDDTS(unsigned int id, unsigned int happeningId) :
 
 bool CDDTS::CheckShutdownSignal()
 {
-	char *mem = static_cast<char *>(sharedMemory);
+	uint8_t *mem = static_cast<uint8_t *>(sharedMemory);
 
 	if(mem[m_Id] == 1)
 	{
@@ -51,7 +51,7 @@ bool CDDTS::CheckShutdownSignal()
 	return false;
 }
 
-void CDDTS::Shutdown()
+void CDDTS::Shutdown() const
 {
 	if(!m_Shutdown)
 	{
@@ -71,19 +71,19 @@ void CDDTS::Shutdown()
 		request.set_origin(::Origin::DDNET);
 
 		const size_t size = request.ByteSizeLong();
-		char *bytes = new char[size];
+		uint8_t *bytes = new uint8_t[size];
 
 		request.SerializeToArray(bytes, size);
 
 		send(sock, bytes, size, 0);
 
-		std::vector<char> gottem(1024);
+		std::vector<uint8_t> gottem(1024);
 
 		// wait for the response owo. works for now
 		recv(sock, gottem.data(), gottem.size(), 0);
 	}
 
-	char *mem = static_cast<char *>(sharedMemory);
+	uint8_t *mem = static_cast<uint8_t *>(sharedMemory);
 	mem[m_Id] = 0;
 
 	munmap(sharedMemory, SHM_SIZE);

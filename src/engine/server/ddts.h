@@ -7,7 +7,7 @@ public:
 	unsigned int m_Id;
 	bool m_Shutdown;
 
-	CDDTS(unsigned int id, unsigned int happeningId);
+	CDDTS(unsigned int Id, unsigned int HappeningId);
 	bool CheckShutdownSignal();
-	void Shutdown();
+	void Shutdown() const;
 };
