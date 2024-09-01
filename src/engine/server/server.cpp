@@ -234,6 +234,8 @@ CServer::CServer()
 	m_CurrentGameTick = MIN_TICK;
 	m_RunServer = UNINITIALIZED;
 
+	m_FinishTick = MIN_TICK;
+
 	m_aShutdownReason[0] = 0;
 
 	for(int i = 0; i < NUM_MAP_TYPES; i++)
@@ -3043,6 +3045,12 @@ int CServer::Run()
 			if(IsInterrupted())
 			{
 				Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "server", "interrupted");
+				break;
+			}
+
+			if(m_FinishTick != MIN_TICK && Config()->m_SvWaitUntilShutdownAfterFinish < (Tick() - m_FinishTick) / TickSpeed())
+			{
+				str_copy(m_aShutdownReason, "GG! Thanks for playing and have a good one");
 				break;
 			}
 		}

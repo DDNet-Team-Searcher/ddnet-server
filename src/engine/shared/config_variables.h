@@ -727,3 +727,4 @@ MACRO_CONFIG_INT(ClVideoRecorderFPS, cl_video_recorder_fps, 60, 1, 1000, CFGFLAG
 /*
  * Add config variables for mods below this comment to avoid merge conflicts.
  */
+MACRO_CONFIG_INT(SvWaitUntilShutdownAfterFinish, sv_wait_until_shutdown_after_finish, 5, 0, 65536, CFGFLAG_SERVER, "Time in seconds before the server will be shutdown after finishing the map")

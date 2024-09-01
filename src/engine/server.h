@@ -31,6 +31,7 @@ class IServer : public IInterface
 	MACRO_INTERFACE("server")
 protected:
 	int m_CurrentGameTick;
+	int m_FinishTick;
 
 public:
 	/*
@@ -48,6 +49,9 @@ public:
 
 	int Tick() const { return m_CurrentGameTick; }
 	int TickSpeed() const { return SERVER_TICK_SPEED; }
+
+	int FinishTick() const { return m_FinishTick; }
+	void SetFinishTick() { m_FinishTick = Tick(); }
 
 	virtual int Port() const = 0;
 	virtual int MaxClients() const = 0;

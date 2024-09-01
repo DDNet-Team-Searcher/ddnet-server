@@ -1306,6 +1306,20 @@ void CGameContext::OnTick()
 		m_TeeHistorian.BeginInputs();
 	}
 	// Warning: do not put code in this function directly above or below this comment
+	// Don't you ever dare to tell me what to not do
+
+	if(Server()->FinishTick() != 0)
+	{
+		float SecondsElapsed = (float)(Server()->Tick() - Server()->FinishTick()) / (float)Server()->TickSpeed();
+
+		if(Config()->m_SvWaitUntilShutdownAfterFinish > SecondsElapsed)
+		{
+			char aBuf[256];
+			str_format(aBuf, sizeof(aBuf), "Server will shutdown in %0.2f", (float)Config()->m_SvWaitUntilShutdownAfterFinish - SecondsElapsed);
+
+			SendBroadcast(aBuf, -1);
+		}
+	}
 }
 
 // Server hooks
