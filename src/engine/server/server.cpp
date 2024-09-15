@@ -3048,7 +3048,7 @@ int CServer::Run()
 				break;
 			}
 
-			if(m_FinishTick != MIN_TICK && Config()->m_SvWaitUntilShutdownAfterFinish < (Tick() - m_FinishTick) / TickSpeed())
+			if(Config()->m_SvShutdownAfterFinish && m_FinishTick != MIN_TICK && Config()->m_SvWaitUntilShutdownAfterFinish < (Tick() - m_FinishTick) / TickSpeed())
 			{
 				str_copy(m_aShutdownReason, "GG! Thanks for playing and have a good one");
 				break;
